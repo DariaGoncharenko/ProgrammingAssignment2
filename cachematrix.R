@@ -1,7 +1,8 @@
-## Put comments here that give an overall description of what your
-## functions do
+## I wrote this R function which caches the Inverse of a matrix in memory to avoid recalculation when the inverse 
+##is requested for the same matrix again or calculate a new inverse if the matrix changes and caches the result in memory
 
-## This function creates a special "matrix" object that can cache its inverse.
+
+## Function creates a special “matrix” and provides function to set values,get values,set inverse, get inverse
 makeCacheMatrix <- function(x = matrix()) {
   inv <- NULL
   set <- function(y){
@@ -9,19 +10,20 @@ makeCacheMatrix <- function(x = matrix()) {
     inv <<- NULL
   }
   get <- function() x
-  setInv <- function(solveMatrix) inv <<- solveMatrix
-  getInv <- function() inv
-  list(set = set, get = get, setInv = setInv, getInv = getInv)
+  setInverse <- function(solveMatrix) inv <<- solveMatrix
+  getInverse <- function() inv
+  list(set = set, get = get, setInverse = setInverse, getInv = getInverse)
 }
 
 
-## This function computes the inverse of the special “matrix” returned by makeCacheMatrix above
+## Below  Function will look into cache to see if inverse exist for matrix and ##retrieve the value.
+##If its the same matrix but will calculate if no inverse exist or matrix is not same.
 
 cacheSolve <- function(x, ...) {
   ## Return a matrix that is the inverse of 'x'
   inv <- x$getInv()
   if(!is.null(inv)){
-    message("getting cached data")
+    message("cached data")
     return(inv)
   }
   data <- x$get()
@@ -29,3 +31,4 @@ cacheSolve <- function(x, ...) {
   x$setInv(inv)
   inv      
 }
+
